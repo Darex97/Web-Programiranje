@@ -14,21 +14,22 @@ namespace Models
 
         [Required]
         public int GalaksijaID { get; set; }
-
+//GALAKSIJA ID I PLANETA U GALAKSIJI PUFLOVIC
         [Required]
         [MaxLength(50)]
         [RegularExpression("^[a-zA-Z0-9]+$")]
         public string ImePlanete { get; set; }
 
 
-        [JsonIgnore]
+       // [JsonIgnore]
         public List<Ratnik> PlanetaRatnici {get; set;}
        
+        [JsonIgnore]
         public Galaksija PlanetaUGalaksiji {get; set;}
 
-         [JsonIgnore]
+      //  [JsonIgnore]
         public List<Borba> PlanetineBorbe {get; set;}
-        //public int[] IDBorbi {get; set;}
+        
     }
 
 }

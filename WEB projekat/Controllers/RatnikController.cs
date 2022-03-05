@@ -24,7 +24,9 @@ namespace WEB_projekat.Controllers
        public ActionResult Preuzmi()
        {
            var ratnici = Context.Ratnici
-           .Include(p => p.RatnikPlaneta);
+           .Include(p => p.RatnikPlaneta)
+           .ThenInclude(w=> w.PlanetineBorbe);
+           
 
            //var ratnik = await ratnici.Where(p => p.snaga == 20 ili p.ime=nesto ).ToListAsync();
                
@@ -62,7 +64,7 @@ namespace WEB_projekat.Controllers
                return BadRequest("Uneli ste nedozvoljen karakter");
            }
 
-           
+         
                  Context.Ratnici.Add(ratnik);
                  await Context.SaveChangesAsync();
                  return Ok($"Sve ok! ID je: {ratnik.ID}");
@@ -79,14 +81,14 @@ namespace WEB_projekat.Controllers
        [HttpPut]
        public async Task<ActionResult> Promeni([FromBody] Ratnik ratnik)
        {
-            if (ratnik.ID <=0)
-            {
-                return BadRequest("Pogresan ID");
-            }
-            //provere
+            var ratnik2 = Context.Ratnici.Where(p => p.Ime==ratnik.Ime).FirstOrDefault();
+           if(ratnik2 ==null)
+           {
+               return BadRequest("Ratnik ne postoji");
+           }
             try
             {
-              var ratnikZaPromenu = await Context.Ratnici.FindAsync(ratnik.ID);
+              var ratnikZaPromenu = await Context.Ratnici.FindAsync(ratnik2.ID);
               ratnikZaPromenu.Ime=ratnik.Ime;
               ratnikZaPromenu.Snaga=ratnik.Snaga;
               ratnikZaPromenu.PlanetaId=ratnik.PlanetaId;
@@ -101,18 +103,19 @@ namespace WEB_projekat.Controllers
             }
         }
 
-        [Route("IzbrisatiRatnika/{id}")]
+        [Route("IzbrisatiRatnika/{ime}")]
         [HttpDelete]
 
-        public async Task<ActionResult> Izbrisati(int id)
+        public async Task<ActionResult> Izbrisati(string ime)
         {
-            if(id<=0)
-            {
-                return BadRequest("Pogresan id");
-            }
+             var ratnik2 = Context.Ratnici.Where(p => p.Ime==ime).FirstOrDefault();
+           if(ratnik2 ==null)
+           {
+               return BadRequest("Ratnik ne postoji");
+           }
             try
             {
-                var ratnik = await Context.Ratnici.FindAsync(id);
+                var ratnik = await Context.Ratnici.FindAsync(ratnik2.ID);
                 //ovde mora da uzmem ratnikove info za stampanje
                 Context.Ratnici.Remove(ratnik);
                 await Context.SaveChangesAsync();

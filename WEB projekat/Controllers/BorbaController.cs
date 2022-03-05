@@ -24,7 +24,8 @@ namespace WEB_projekat.Controllers
        [HttpGet]
        public ActionResult Preuzmi()
        {
-           var borbe = Context.Borbe;
+           var borbe = Context.Borbe
+           .Include(p=> p.BorbaPlanete);
            
 
            
@@ -38,39 +39,66 @@ namespace WEB_projekat.Controllers
        [Route("DodajBorbu")]
        [HttpPost]
        public async Task<ActionResult> DodajBorbu ([FromBody] Borba borba)
-       {
+       {    
+           
+          
           try 
           { 
-             
-            borba.Vreme=DateTime.Now;
+            string vreme=DateTime.Now.ToString("MM/dd/yyyy");
+          borba.Vreme=vreme;
+            
+            
             var planeta1 = Context.Planete.Where(r => r.ID == borba.PlanetaId1).Select(p => p.GalaksijaID).FirstOrDefault();
             var planeta2 = Context.Planete.Where(r => r.ID == borba.PlanetaId2).Select(p => p.GalaksijaID).FirstOrDefault();
                 
             if(!planeta1.Equals(planeta2))
             return BadRequest("Razlicite galaksije");
 
+            if(borba.PlanetaId1==borba.PlanetaId2)
+            return BadRequest("Ista planeta,molim vas izaberite razlicite planete");
+            
+            
+           
+            
             
            var ratnici1 = Context.Ratnici.Where(r => r.PlanetaId == borba.PlanetaId1);
            var ratnici2 = Context.Ratnici.Where(r => r.PlanetaId == borba.PlanetaId2);
 
            var sumaSnaga1= ratnici1.Sum(r => r.Snaga);
            var sumaSnaga2= ratnici2.Sum(r => r.Snaga);
-           
+          
 
             if(sumaSnaga1>sumaSnaga2)
              {
+                 borba.BorbaPlanete=Context.Planete.Where(p=> p.ID==borba.PlanetaId1 || p.ID==borba.PlanetaId2 ).ToList();
                  borba.PlanetaPobedink=borba.PlanetaId1;
+                 
               Context.Borbe.Add(borba);
               await Context.SaveChangesAsync();
                 return Ok($"Pobednik je: {borba.PlanetaId1}");
                }
               if(sumaSnaga1<sumaSnaga2)
-            {    borba.PlanetaPobedink=borba.PlanetaId2;
+            {  
+                 borba.BorbaPlanete=Context.Planete.Where(p=> p.ID==borba.PlanetaId2 || p.ID==borba.PlanetaId1 ).ToList();
+                  borba.PlanetaPobedink=borba.PlanetaId2;
+/////////////////////////////
+
+                    int pom=borba.PlanetaId1;
+                    borba.PlanetaId1=borba.PlanetaId2;
+                    borba.PlanetaId2=pom;
+//////////////////////////////
                  Context.Borbe.Add(borba);
                    await Context.SaveChangesAsync();
-                   return Ok($"Pobednik je: {borba.PlanetaId2}");
+                   return Ok($"Pobednik je: {borba.PlanetaId1}");
                }
-                 return BadRequest("Snage su im jednake");
+
+                borba.BorbaPlanete=Context.Planete.Where(p=> p.ID==borba.PlanetaId1 || p.ID==borba.PlanetaId2 ).ToList();
+                 borba.PlanetaPobedink=-1;
+                 
+               Context.Borbe.Add(borba);
+               await Context.SaveChangesAsync();
+                return Ok("Nema pobednika,snage su jednake");
+                 //return BadRequest("Snage su im jednake");
             
                }
           catch (Exception e)

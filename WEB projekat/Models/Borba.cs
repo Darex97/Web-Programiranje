@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -12,9 +13,9 @@ namespace Models
         [Key]
         public int ID { get; set; }
 
-        [Required]
+        //[Required]
         
-        public DateTime Vreme { get; set; }
+        public string Vreme { get; set; }
 
         [Required]
         public int PlanetaId1 { get; set; }
@@ -22,12 +23,14 @@ namespace Models
         [Required]
         public int PlanetaId2 { get; set; }
 
+
+
         [Required]
         public int PlanetaPobedink { get; set; }
 
-
+       [JsonIgnore]
         public List<Planeta> BorbaPlanete {get; set;}
-        //public List<int> IDPlaneta {get; set;}
+        
     }
 
 }

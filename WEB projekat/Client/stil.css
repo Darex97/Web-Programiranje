@@ -1,0 +1,80 @@
+.glavniContainer{
+    display: flex;
+    flex-direction: column;
+   background-color: black;
+}
+.gornjiDeo{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    
+}
+.Form{
+    flex:0 1 ;
+
+}
+
+.donjiDeo{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+}
+.slikaPlaneta{
+    display: flex;
+    max-width: 100%;
+    
+    height: auto;
+}
+
+.glavaDonjeTabele{
+    position:relative;
+     left:144px; 
+     top:2px;
+     color: yellow;
+     
+}
+
+table,tr,th,td{
+    border: 1px solid rgb(0, 252, 0);
+    flex-wrap: wrap;
+   flex: 0 1;
+   
+}
+th{
+    color: yellow;
+}
+table{
+    border-collapse: collapse;
+}
+select
+{   color: blueviolet;
+    font:menu;
+    font-weight: bold;
+    font-size: small;
+    
+    
+    
+}
+.Display2,.Display{
+    color: red;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+}
+label{
+    font-family: Arial, Helvetica, sans-serif;
+    color:rgb(0, 252, 0) ;
+}
+input{
+    background-color: yellow;
+    font-family: Arial, Helvetica, sans-serif;
+    color: blue;
+}
+button{
+    border-radius: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: blueviolet;
+    font-weight: bold;
+}

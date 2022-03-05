@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace WEB_projekat.Controllers
@@ -78,6 +79,71 @@ namespace WEB_projekat.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [Route("SamoNaziviGalaksija")]
+       [HttpGet]
+       public ActionResult Preuzmi()
+       {
+           var galaksije = Context.Galaksije.ToList();
+           
+           
 
+           
+               
+                
+
+           return Ok(galaksije); 
+       }
+        [Route("GalaksijaBorbe/{id}")]
+       [HttpGet]
+       public ActionResult Preuzmi(int id)
+       {
+        //    var galaksije = Context.Planete.Where(q =>q.GalaksijaID==id)
+        //    .Include(q => q.PlanetineBorbe);
+
+        //    var borbe = Context.Borbe
+        //    .Include(p=> p.BorbaPlanete);
+
+        //    var trazeneBorbe = borbe
+        //    .Select(p=>
+        //    new{ 
+        //        vreme = p.Vreme,
+        //        b=p.BorbaPlanete
+        //        .Select(t=>
+        //        new{
+        //            galaksija=t.GalaksijaID,
+        //            pobednik=t.ImePlanete
+        //        }).Where(q=>q.galaksija==id)
+
+
+        //    });
+
+           
+         var borbe=  Context.Planete
+           .Where(q=>q.GalaksijaID==id)
+           .Include(p=>p.PlanetineBorbe);
+
+           var trazeneBorbe= borbe.Select(p=>
+           new{ Ime = p.ImePlanete,
+                PlanetaDomacin=p.ID,
+                b = p.PlanetineBorbe.Select(q=>
+                new{    
+                    
+                    vreme=q.Vreme,
+                    prva=q.PlanetaId1,
+                    druga=q.PlanetaId2,
+                    pobednik=q.PlanetaPobedink
+                    
+                })
+
+           }).ToList();
+           
+           
+           
+         //var ratnik = await ratnici.Where(p => p.snaga == 20 ili p.ime=nesto ).ToListAsync();
+               
+                
+
+           return Ok(trazeneBorbe); // ovde umesto ratnici stavim ratnik
+       }
     }
 }

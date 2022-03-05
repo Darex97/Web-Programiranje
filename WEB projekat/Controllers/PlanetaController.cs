@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace WEB_projekat.Controllers
@@ -17,6 +18,34 @@ namespace WEB_projekat.Controllers
         {
             Context = context;
         }
+        [Route("PrikaziPlanete")]
+       [HttpGet]
+       public ActionResult Preuzmi()
+       {
+           var planete = Context.Planete
+           .Include(p=>p.PlanetaRatnici);
+
+            var zaPrikaz=planete.Select(p=>
+           new{
+               idPlanete=p.ID,//novododato
+               imePlanete=p.ImePlanete,
+               ratnici=p.PlanetaRatnici.Select(q=> 
+               new{
+                   Ime=q.Ime
+               })
+           }).ToList();
+
+
+          
+           
+           
+
+           
+               
+                
+
+           return Ok(zaPrikaz); 
+       }
 
 
        [Route("DodatiPlanetu")]

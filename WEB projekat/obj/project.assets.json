@@ -5947,11 +5947,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\Desktop\\WEB projekat\\WEB projekat.csproj",
+      "projectUniqueName": "C:\\Users\\user\\Desktop\\WEBP\\Web-projekat\\WEB projekat\\WEB projekat.csproj",
       "projectName": "WEB projekat",
-      "projectPath": "C:\\Users\\user\\Desktop\\WEB projekat\\WEB projekat.csproj",
+      "projectPath": "C:\\Users\\user\\Desktop\\WEBP\\Web-projekat\\WEB projekat\\WEB projekat.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\Desktop\\WEB projekat\\obj\\",
+      "outputPath": "C:\\Users\\user\\Desktop\\WEBP\\Web-projekat\\WEB projekat\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config",

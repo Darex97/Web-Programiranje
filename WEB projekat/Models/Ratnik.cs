@@ -29,7 +29,7 @@ namespace Models
 
          [JsonIgnore]
          public Planeta RatnikPlaneta {get; set;}
-
+// jednu od ove dve veze da porazmislim PUFLOVIC
          
 
 
