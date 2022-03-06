@@ -9,12 +9,10 @@ namespace Models
     [Table("Borba")]
 
     public class Borba
-    {      
+    {
         [Key]
         public int ID { get; set; }
 
-        //[Required]
-        
         public string Vreme { get; set; }
 
         [Required]
@@ -23,14 +21,12 @@ namespace Models
         [Required]
         public int PlanetaId2 { get; set; }
 
-
-
         [Required]
         public int PlanetaPobedink { get; set; }
 
-       [JsonIgnore]
-        public List<Planeta> BorbaPlanete {get; set;}
-        
+        [JsonIgnore]
+        public List<Planeta> BorbaPlanete { get; set; }
+
     }
 
 }

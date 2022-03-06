@@ -12,7 +12,7 @@ namespace WEB_projekat.Controllers
     [Route("[controller]")]
     public class GalaksijaController : ControllerBase
     {
-       public BorbaContext Context{ get; set;}
+        public BorbaContext Context { get; set; }
 
         public GalaksijaController(BorbaContext context)
         {
@@ -20,53 +20,53 @@ namespace WEB_projekat.Controllers
         }
 
         [Route("DodatiGalaksiju")]
-       [HttpPost]
-       public async Task<ActionResult> DodajGalaksiju([FromBody] Galaksija galaksija)
-       {
-           var galaksija2 = Context.Galaksije.Where(p => p.ImeGalaksije==galaksija.ImeGalaksije).FirstOrDefault();
-           if(galaksija2 !=null)
-           {
-               return BadRequest("Galaksija vec postoji");
-           }
-           if(string.IsNullOrWhiteSpace(galaksija.ImeGalaksije) )
-           {
-               return BadRequest("Niste uneli ime");
-           }
-           if( galaksija.ImeGalaksije.Length >50)
-           {
-               return BadRequest("Uneli ste predugacko ime");
-           }
-           if(!(Regex.Match(galaksija.ImeGalaksije,"^[a-zA-Z0-9]+$")).Success) 
-           {
-               return BadRequest("Uneli ste nedozvoljen karakter");
-           }
+        [HttpPost]
+        public async Task<ActionResult> DodajGalaksiju([FromBody] Galaksija galaksija)
+        {
+            var galaksija2 = Context.Galaksije.Where(p => p.ImeGalaksije == galaksija.ImeGalaksije).FirstOrDefault();
+            if (galaksija2 != null)
+            {
+                return BadRequest("Galaksija vec postoji");
+            }
+            if (string.IsNullOrWhiteSpace(galaksija.ImeGalaksije))
+            {
+                return BadRequest("Niste uneli ime");
+            }
+            if (galaksija.ImeGalaksije.Length > 50)
+            {
+                return BadRequest("Uneli ste predugacko ime");
+            }
+            if (!(Regex.Match(galaksija.ImeGalaksije, "^[a-zA-Z0-9]+$")).Success)
+            {
+                return BadRequest("Uneli ste nedozvoljen karakter");
+            }
 
-           try 
-           {
-                 Context.Galaksije.Add(galaksija);
-                 await Context.SaveChangesAsync();
-                 return Ok($"Sve ok! ID je: {galaksija.ID}");
-           }
-           catch (Exception e)
-           {
-               return BadRequest(e.Message);
-           }
-          
-       }
+            try
+            {
+                Context.Galaksije.Add(galaksija);
+                await Context.SaveChangesAsync();
+                return Ok($"Sve ok! ID je: {galaksija.ID}");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
 
         [Route("IzbrisatiGalaksiju/{id}")]
         [HttpDelete]
 
         public async Task<ActionResult> Izbrisati(int id)
         {
-            if(id<=0)
+            if (id <= 0)
             {
                 return BadRequest("Pogresan id");
             }
             try
             {
                 var galaksija = await Context.Galaksije.FindAsync(id);
-                if(galaksija==null)
+                if (galaksija == null)
                 {
                     return BadRequest("Ne postoji galaksija");
                 }
@@ -80,70 +80,44 @@ namespace WEB_projekat.Controllers
             }
         }
         [Route("SamoNaziviGalaksija")]
-       [HttpGet]
-       public ActionResult Preuzmi()
-       {
-           var galaksije = Context.Galaksije.ToList();
-           
-           
+        [HttpGet]
+        public ActionResult Preuzmi()
+        {
+            var galaksije = Context.Galaksije.ToList();
 
-           
-               
-                
 
-           return Ok(galaksije); 
-       }
+
+
+
+
+
+            return Ok(galaksije);
+        }
         [Route("GalaksijaBorbe/{id}")]
-       [HttpGet]
-       public ActionResult Preuzmi(int id)
-       {
-        //    var galaksije = Context.Planete.Where(q =>q.GalaksijaID==id)
-        //    .Include(q => q.PlanetineBorbe);
+        [HttpGet]
+        public ActionResult Preuzmi(int id)
+        {
 
-        //    var borbe = Context.Borbe
-        //    .Include(p=> p.BorbaPlanete);
+            var borbe = Context.Planete
+           .Where(q => q.GalaksijaID == id)
+           .Include(p => p.PlanetineBorbe);
+            var trazeneBorbe = borbe.Select(p =>
+                        new
+                        {
+                            Ime = p.ImePlanete,
+                            PlanetaDomacin = p.ID,
+                            b = p.PlanetineBorbe.Select(q =>
+                        new
+                             {
 
-        //    var trazeneBorbe = borbe
-        //    .Select(p=>
-        //    new{ 
-        //        vreme = p.Vreme,
-        //        b=p.BorbaPlanete
-        //        .Select(t=>
-        //        new{
-        //            galaksija=t.GalaksijaID,
-        //            pobednik=t.ImePlanete
-        //        }).Where(q=>q.galaksija==id)
+                                 vreme = q.Vreme,
+                                 prva = q.PlanetaId1,
+                                 druga = q.PlanetaId2,
+                                 pobednik = q.PlanetaPobedink
+                             })
 
-
-        //    });
-
-           
-         var borbe=  Context.Planete
-           .Where(q=>q.GalaksijaID==id)
-           .Include(p=>p.PlanetineBorbe);
-
-           var trazeneBorbe= borbe.Select(p=>
-           new{ Ime = p.ImePlanete,
-                PlanetaDomacin=p.ID,
-                b = p.PlanetineBorbe.Select(q=>
-                new{    
-                    
-                    vreme=q.Vreme,
-                    prva=q.PlanetaId1,
-                    druga=q.PlanetaId2,
-                    pobednik=q.PlanetaPobedink
-                    
-                })
-
-           }).ToList();
-           
-           
-           
-         //var ratnik = await ratnici.Where(p => p.snaga == 20 ili p.ime=nesto ).ToListAsync();
-               
-                
-
-           return Ok(trazeneBorbe); // ovde umesto ratnici stavim ratnik
-       }
+                        }).ToList();
+            return Ok(trazeneBorbe);
+        }
     }
 }

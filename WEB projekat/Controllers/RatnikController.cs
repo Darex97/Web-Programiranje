@@ -12,92 +12,87 @@ namespace WEB_projekat.Controllers
     [Route("[controller]")]
     public class RatnikController : ControllerBase
     {
-       public BorbaContext Context{ get; set;}
+        public BorbaContext Context { get; set; }
 
         public RatnikController(BorbaContext context)
         {
             Context = context;
         }
 
-       [Route("Ratnici")]
-       [HttpGet]
-       public ActionResult Preuzmi()
-       {
-           var ratnici = Context.Ratnici
-           .Include(p => p.RatnikPlaneta)
-           .ThenInclude(w=> w.PlanetineBorbe);
-           
+        [Route("Ratnici")]
+        [HttpGet]
+        public ActionResult Preuzmi()
+        {
+            var ratnici = Context.Ratnici
+            .Include(p => p.RatnikPlaneta)
+            .ThenInclude(w => w.PlanetineBorbe);
 
-           //var ratnik = await ratnici.Where(p => p.snaga == 20 ili p.ime=nesto ).ToListAsync();
-               
-                
+            return Ok(ratnici);
+        }
 
-           return Ok(ratnici); // ovde umesto ratnici stavim ratnik
-       }
-
-       [Route("DodatiRatnika")]
-       [HttpPost]
-       public async Task<ActionResult> DodajRatnika([FromBody] Ratnik ratnik)
-       {
-          try 
-          {
-           
-           var ratnik2 = Context.Ratnici.Where(p => p.Ime==ratnik.Ime).FirstOrDefault();
-           if(ratnik2 !=null)
-           {
-               return BadRequest("Ratnik vec postoji");
-           }
-           if(ratnik.Snaga < 0 || ratnik.Snaga >100)
-           {
-               return BadRequest("Vrednost ratnikove snage moze biti u intervalu od 1 do 100");
-           }
-           if(string.IsNullOrWhiteSpace(ratnik.Ime) )
-           {
-               return BadRequest("Niste uneli ime");
-           }
-           if( ratnik.Ime.Length >50)
-           {
-               return BadRequest("Uneli ste predugacko ime");
-           }
-           if(!(Regex.Match(ratnik.Ime,"^[a-zA-Z0-9]+$")).Success) 
-           {
-               return BadRequest("Uneli ste nedozvoljen karakter");
-           }
-
-         
-                 Context.Ratnici.Add(ratnik);
-                 await Context.SaveChangesAsync();
-                 return Ok($"Sve ok! ID je: {ratnik.ID}");
-          }
-          catch (Exception e)
-          {
-              return BadRequest(e.Message);
-          }
-          
-       }
-
-
-       [Route("PromeniRatnika")]
-       [HttpPut]
-       public async Task<ActionResult> Promeni([FromBody] Ratnik ratnik)
-       {
-            var ratnik2 = Context.Ratnici.Where(p => p.Ime==ratnik.Ime).FirstOrDefault();
-           if(ratnik2 ==null)
-           {
-               return BadRequest("Ratnik ne postoji");
-           }
+        [Route("DodatiRatnika")]
+        [HttpPost]
+        public async Task<ActionResult> DodajRatnika([FromBody] Ratnik ratnik)
+        {
             try
             {
-              var ratnikZaPromenu = await Context.Ratnici.FindAsync(ratnik2.ID);
-              ratnikZaPromenu.Ime=ratnik.Ime;
-              ratnikZaPromenu.Snaga=ratnik.Snaga;
-              ratnikZaPromenu.PlanetaId=ratnik.PlanetaId;
 
-              await Context.SaveChangesAsync();
-              return Ok("Ratnik je uspesno izmenjen");
+                var ratnik2 = Context.Ratnici.Where(p => p.Ime == ratnik.Ime).FirstOrDefault();
+                if (ratnik2 != null)
+                {
+                    return BadRequest("Ratnik vec postoji");
+                }
+                if (ratnik.Snaga < 0 || ratnik.Snaga > 100)
+                {
+                    return BadRequest("Vrednost ratnikove snage moze biti u intervalu od 1 do 100");
+                }
+                if (string.IsNullOrWhiteSpace(ratnik.Ime))
+                {
+                    return BadRequest("Niste uneli ime");
+                }
+                if (ratnik.Ime.Length > 50)
+                {
+                    return BadRequest("Uneli ste predugacko ime");
+                }
+                if (!(Regex.Match(ratnik.Ime, "^[a-zA-Z0-9]+$")).Success)
+                {
+                    return BadRequest("Uneli ste nedozvoljen karakter");
+                }
+
+
+                Context.Ratnici.Add(ratnik);
+                await Context.SaveChangesAsync();
+                return Ok($"Sve ok! ID je: {ratnik.ID}");
             }
-       
-            catch(Exception e)
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
+
+
+        [Route("PromeniRatnika")]
+        [HttpPut]
+        public async Task<ActionResult> Promeni([FromBody] Ratnik ratnik)
+        {
+            var ratnik2 = Context.Ratnici.Where(p => p.Ime == ratnik.Ime).FirstOrDefault();
+            if (ratnik2 == null)
+            {
+                return BadRequest("Ratnik ne postoji");
+            }
+            try
+            {
+                var ratnikZaPromenu = await Context.Ratnici.FindAsync(ratnik2.ID);
+                ratnikZaPromenu.Ime = ratnik.Ime;
+                ratnikZaPromenu.Snaga = ratnik.Snaga;
+                ratnikZaPromenu.PlanetaId = ratnik.PlanetaId;
+
+                await Context.SaveChangesAsync();
+                return Ok("Ratnik je uspesno izmenjen");
+            }
+
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
@@ -108,15 +103,14 @@ namespace WEB_projekat.Controllers
 
         public async Task<ActionResult> Izbrisati(string ime)
         {
-             var ratnik2 = Context.Ratnici.Where(p => p.Ime==ime).FirstOrDefault();
-           if(ratnik2 ==null)
-           {
-               return BadRequest("Ratnik ne postoji");
-           }
+            var ratnik2 = Context.Ratnici.Where(p => p.Ime == ime).FirstOrDefault();
+            if (ratnik2 == null)
+            {
+                return BadRequest("Ratnik ne postoji");
+            }
             try
             {
                 var ratnik = await Context.Ratnici.FindAsync(ratnik2.ID);
-                //ovde mora da uzmem ratnikove info za stampanje
                 Context.Ratnici.Remove(ratnik);
                 await Context.SaveChangesAsync();
                 return Ok("Uspesno izbrisn ratnik");
@@ -126,6 +120,6 @@ namespace WEB_projekat.Controllers
                 return BadRequest(e.Message);
             }
         }
-        
+
     }
 }
