@@ -9,9 +9,6 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    
-   
-   
 }
 .Form{
     flex:0 1 ;
@@ -22,11 +19,10 @@
 
 }
 .Form2{
-    margin-left: 85px;
+    margin-left: 98px;
     margin-top: 20px;
     margin-bottom: 5px;
 }
-
 .donjiDeo{
     
     display: flex;
@@ -34,39 +30,36 @@
     flex-wrap: wrap;
     justify-content: space-evenly;
     border: 1px solid rgb(0, 252, 0);
-    
-    
 }
 .slikaPlaneta{
     display: flex;
     max-width: 100%;
     
     height: auto;
-    
 }
-
 .glavaDonjeTabele{
     position:relative;
      left:144px; 
      top:2px;
      color: yellow;
-     
 }
-
 .Display2,.Display{
     margin-top: 5px;
     margin-bottom: 5px;
     color: red;
     font-family: Arial, Helvetica, sans-serif;
     font-size: small;
-    
 }
-
+.Display{
+    margin-top: 23px;
+}
+.Display2{
+    margin-right: 38px;
+}
 table,th,td{
     border: 1px solid rgb(0, 252, 0);
     flex-wrap: wrap;
-   flex: 0 1;
-   
+    flex: 0 1;
 }
 th{
     color: yellow;
@@ -82,11 +75,7 @@ select
     font:menu;
     font-weight: bold;
     font-size: small;
-    
-    
-    
 }
-
 label{
     font-family: Arial, Helvetica, sans-serif;
     color:rgb(0, 252, 0) ;
