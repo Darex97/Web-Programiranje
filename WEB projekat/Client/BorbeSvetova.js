@@ -34,6 +34,10 @@ export class BorbaSvetova {
         contForm.className = "Form";
         gornjiDeo.appendChild(contForm);
 
+        let contDisplay1 = document.createElement("div");
+        contDisplay1.className = "Display";
+        gornjiDeo.appendChild(contDisplay1);
+
         let contForm2 = document.createElement("div");
         contForm2.className = "Form2";
         donjiDeo.appendChild(contForm2);
@@ -153,7 +157,22 @@ export class BorbaSvetova {
         }).then(p => {
             if (p.ok) {
                 alert("Uspesno ste dodali ratnika!");
-                document.location.reload()
+
+
+                fetch("https://localhost:5001/Planeta/PrikaziPlanete")
+                    .then(p => {
+                        p.json().then(planete => {
+                            planete.forEach(planeta => {
+
+                                var p = new Planeta(planeta.idPlanete, planeta.imePlanete, planeta.ratnici);
+                                this.listaPlaneta.shift();
+                                this.listaPlaneta.push(p);
+                            });
+
+                            this.crtajDisplay();
+                        })
+
+                    })
 
             }
             else {
@@ -200,13 +219,33 @@ export class BorbaSvetova {
             })
         }).then(p => {
             if (p.ok) {
-                alert("Uspesno ste izmenili ratnika!");
-                document.location.reload()
+
+
+
+                alert("Uspesno ste izmenili ratnika ratnika!");
+                fetch("https://localhost:5001/Planeta/PrikaziPlanete")
+                    .then(p => {
+                        p.json().then(planete => {
+                            planete.forEach(planeta => {
+
+                                var p = new Planeta(planeta.idPlanete, planeta.imePlanete, planeta.ratnici);
+                                this.listaPlaneta.shift();
+                                this.listaPlaneta.push(p);
+                            });
+
+                            this.crtajDisplay();
+                        })
+
+                    })
+
+
+
+
 
             }
             else {
                 alert("Nastala je greska prilikom izmene ratnika!");
-                document.location.reload();
+
             }
         })
     }
@@ -219,7 +258,7 @@ export class BorbaSvetova {
         }
 
 
-        console.log("ime: " + imeHeroja);
+
 
 
 
@@ -229,16 +268,33 @@ export class BorbaSvetova {
 
         }).then(p => {
             if (p.ok) {
-                alert("Uspesno ste obrisali ratnika!");
-                document.location.reload()
+
+
+                fetch("https://localhost:5001/Planeta/PrikaziPlanete")
+                    .then(p => {
+                        p.json().then(planete => {
+                            planete.forEach(planeta => {
+
+                                var p = new Planeta(planeta.idPlanete, planeta.imePlanete, planeta.ratnici);
+                                this.listaPlaneta.shift();
+                                this.listaPlaneta.push(p);
+                            });
+
+                            this.crtajDisplay();
+                        })
+
+                    })
+
+
 
             }
             else {
                 alert("Nastala je greska prilikom brisanja ratnika!");
-                document.location.reload();
+
             }
         })
     }
+
 
     obrisiPrethodniSadrzaj() {
         var bodyTable = document.querySelector(".TableData");
@@ -256,9 +312,8 @@ export class BorbaSvetova {
 
     crtajDisplay(host) {
 
-        let contDisplay = document.createElement("div");
-        contDisplay.className = "Display";
-        host.appendChild(contDisplay);
+        var contDisplay = this.obrisiDisplay();
+
 
         var table = document.createElement("table");
         table.className = "table";
@@ -276,10 +331,12 @@ export class BorbaSvetova {
 
         let th;
         this.listaPlaneta.forEach(el => {
+
             th = document.createElement("th")
             th.innerHTML = el.ime;
             tr.appendChild(th);
         })
+
 
         var bodyTable = this.obrisiPrethodniSadrzaj();
         var tr = document.createElement("tr");
@@ -290,6 +347,20 @@ export class BorbaSvetova {
 
             a.crtajPlanete(tr);
         })
+    }
+    obrisiDisplay() {
+
+        var display = document.querySelector(".Display");
+        var roditelj = display.parentNode;
+        roditelj.removeChild(display);
+
+
+        let contDisplay = document.createElement("div");
+        contDisplay.className = "Display";
+        roditelj.appendChild(contDisplay);
+
+
+        return contDisplay;
     }
 
     crtajFormu2(host) {
@@ -399,12 +470,13 @@ export class BorbaSvetova {
         }).then(p => {
             if (p.ok) {
                 alert("Uspesno ste dodali borbu!");
-                document.location.reload()
+                this.crtajDisplay2();
+
 
             }
             else {
                 alert("Nastala je greska prilikom dodavanja ratnika!");
-                document.location.reload();
+
             }
         })
     }

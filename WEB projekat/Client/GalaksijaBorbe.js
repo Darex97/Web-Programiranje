@@ -9,6 +9,7 @@ export class GalaksijaBorbe {
     crtajBorbe(host, listaplaneta) {
 
         var el = document.createElement("td");
+        el.className="td2";
         var borba = "";
         var protivnik = "";
         var planeta = "";
