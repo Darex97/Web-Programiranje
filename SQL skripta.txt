@@ -1,0 +1,23 @@
+set identity_insert [#tempGalaksija] on;
+
+
+insert [#tempGalaksija] ([ID],[ImeGalaksije])
+select 5,N'Andromeda' UNION ALL
+select 6,N'MlecniPut';
+
+set identity_insert [#tempGalaksija] off;
+
+
+
+set identity_insert [#tempPlaneta] on;
+
+
+insert [#tempPlaneta] ([ID],[ImePlanete],[GalaksijaID])
+select 10,N'Nebula',5 UNION ALL
+select 11,N'Ciklonis',5 UNION ALL
+select 12,N'Obelisk',5 UNION ALL
+select 13,N'Zemlja',6 UNION ALL
+select 14,N'Mars',6 UNION ALL
+select 15,N'Neptun',6;
+
+set identity_insert [#tempPlaneta] off;
