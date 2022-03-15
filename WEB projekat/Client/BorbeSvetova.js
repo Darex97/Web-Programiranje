@@ -177,7 +177,7 @@ export class BorbaSvetova {
             }
             else {
                 alert("Nastala je greska prilikom dodavanja ratnika!");
-                document.location.reload();
+                
             }
         })
     }
@@ -253,7 +253,7 @@ export class BorbaSvetova {
     izbrisiRatnika(imeHeroja) {
 
         if (imeHeroja === null || imeHeroja === undefined || imeHeroja == "") {
-            alert("Unesite ime ratnika za promenu");
+            alert("Unesite ime ratnika za brisanje");
             return;
         }
 
@@ -475,7 +475,7 @@ export class BorbaSvetova {
 
             }
             else {
-                alert("Nastala je greska prilikom dodavanja ratnika!");
+                alert("Invazija nije uspela, razdaljina izmedju planeta je prevelika!");
 
             }
         })
