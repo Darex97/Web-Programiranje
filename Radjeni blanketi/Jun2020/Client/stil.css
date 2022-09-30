@@ -1,0 +1,40 @@
+.glavniKontejner{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+}
+.ceoTurnir{
+    border: 2px solid black;
+    display: flex;
+    flex-direction: column;
+}
+.donjiDeo{
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.prviIgracKontejner{
+    display: flex;
+    flex-direction: column;
+    
+}
+.drugiIgracKontejner{
+    display: flex;
+    flex-direction: column;
+    
+}
+.turnirKontejner{
+    display: flex;
+    justify-content: center;
+}
+.slika{
+    height: 100px;
+}
+.rezultat{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

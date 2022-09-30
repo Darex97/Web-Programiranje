@@ -1,0 +1,32 @@
+.autoSlika{
+    height: 50px;
+    width: 50px;
+}
+.prodavnicaKontejner{
+    border: 1px solid black;
+}
+.nazivKontejner{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 2px solid green;
+}
+.donjiDeo{
+    display: flex;
+    flex: 1 1 ;
+    flex-direction: row;
+    align-items: flex-start;
+    align-content: space-between;
+}
+.formaKontejner{
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 300px;
+    height: max-content;
+}
+.prikazKontejner{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: aqua;
+    border-left: 1px solid red;
+}
